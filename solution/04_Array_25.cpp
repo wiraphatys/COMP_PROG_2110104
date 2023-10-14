@@ -1,48 +1,28 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int largest(int arr[], int n)
-{
-    int pos = 0;
-    int max = arr[0];
-    for (int i = 1; i < n; i++)
-        if (arr[i] > max)
-        {
-            max = arr[i];
-            pos = i;
+int main() {
+    int n, x, result = 0;
+    vector<int> v;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        cin >> x;
+        v.push_back(x);
+    }
+    int maxLeft = v[0], maxRight = v[v.size() - 1];
+    int L = 0, R = v.size() - 1;
+    while (L < R) {
+        if (maxLeft < maxRight) {
+            L++;
+            maxLeft = max(maxLeft, v[L]);
+            result += maxLeft - v[L];
         }
-    return pos;
-}
-
-int main()
-{
-    int N;
-    cin >> N;
-
-    int Arr[N];
-    for (int i = 0; i < N; i++)
-    {
-        cin >> Arr[i];
+        else {
+            R--;
+            maxRight = max(maxRight, v[R]);
+            result += maxRight - v[R];
+        }
     }
-
-    int leftMax[N];
-    int left = Arr[0];
-
-    for (int i = 0; i < N; i++)
-    {
-        leftMax[i] = left;
-        left = max(left, Arr[i]);
-    }
-
-    int water = 0;
-    int rightMax = Arr[N - 1];
-    int index_max = largest(Arr, N);
-
-    for (int i = N - 1; i > index_max; i--)
-    {
-        rightMax = max(rightMax, Arr[i]);
-        water += min(leftMax[i], rightMax) - Arr[i];
-    }
-
-    cout << water;
+    cout << result;
+    return 0;
 }
